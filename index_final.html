@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EgySmartTours - اكتشف القاهرة بفخامة وإستمتع بتجربة سياحية مختلفة !">
+  <title>EgySmartTours - رحلتك الفاخرة في القاهرة</title>
+  <link rel="stylesheet" href="styles_final.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" as="style">
+  <link rel="icon" href="favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/mapbox-gl@2.9.0/dist/mapbox-gl.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <img src="https://i.ibb.co/GQVbRr3q/Chat-GPT-Image-7-2025-01-39-45-1.png" alt="شعار EgySmartTours" class="logo" loading="lazy">
+      <div class="header-text">
+        <h1>EgySmartTours</h1>
+        <p>اكتشف سحر القاهرة بأسلوب ذكى لا يُنسى</p>
+      </div>
+    </div>
+    <nav class="nav" aria-label="القائمة الرئيسية">
+      <button onclick="scrollToSection('video')" aria-label="الرئيسية">الرئيسية</button>
+      <button onclick="scrollToSection('booking')" aria-label="تأجير سيارة">تأجير سيارة</button>
+      <button onclick="scrollToSection('map')" aria-label="الخريطة">الخريطة</button>
+      <button onclick="scrollToSection('schedule')" aria-label="برنامج الرحلة">برنامج الرحلة</button>
+      <button onclick="scrollToSection('about')" aria-label="من نحن">من نحن</button>
+      <button onclick="scrollToSection('contact')" aria-label="اتصل بنا">اتصل بنا</button>
+    </nav>
+  </div>
+
+  <!-- Video Section -->
+  <section id="video" class="section">
+    <div class="video-container" style="position: relative; overflow: hidden;">
+      <video autoplay loop muted playsinline class="video-bg" poster="cover.webp" preload="none">
+        <source src="https://www.dropbox.com/scl/fi/wfuarmmweya3fnz1zbutn/Egy-Smart-Tours-0.mp4?rlkey=7pv5o7ra41h2w9bm39ll1wnti&st=xmq3pnsp&raw=1" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو.
+      </video>
+      <div class="video-caption">
+        استمتع بجمال النيل <span class="offer"> - إكتشف سحر مصر!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Section -->
+  <section id="booking" class="section">
+    <div class="container">
+      <h2>تأجير سيارة فاخرة</h2>
+      <div class="car-selection">
+        <h3>اختر سيارتك</h3>
+        <div id="car-grid"></div>
+      </div>
+      <form id="booking-form">
+        <label>الاسم</label>
+        <input type="text" id="name" placeholder="أدخل اسمك" required>
+        <label>رقم الموبايل</label>
+        <input type="tel" id="mobile" placeholder="مثل: +201234567890" pattern="\+?[0-9]{10,15}" required>
+        <label>تاريخ الوصول</label>
+        <input type="date" id="start-date" required>
+        <label>تاريخ المغادرة</label>
+        <input type="date" id="end-date" required>
+        <label>وقت الوصول</label>
+        <input type="time" id="arrival-time" required>
+        <label>وقت المغادرة</label>
+        <input type="time" id="departure-time" required>
+        <label>موقع الاستلام</label>
+        <input type="text" id="pickup-location" placeholder="مثل: مطار القاهرة" required>
+        <label>موقع التسليم</label>
+        <input type="text" id="dropoff-location" placeholder="مثل: فندق ماريوت" required>
+        <div id="total-price">السعر الإجمالي: 0 جنيه</div>
+        <p class="payment-note"> يتم الدفع بعد استلام السيارة</p>
+        <button type="submit">تأكيد الحجز</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section id="map" class="section">
+    <div class="container">
+      <h2>اكتشف الأماكن</h2>
+      <div class="map-wrapper">
+        <div id="map-container">
+          <div id="virtual-tour-label" class="virtual-tour-label"></div>
+        </div>
+        <div class="places-panel">
+          <input type="text" id="place-picker" placeholder="ابحث عن مكان">
+          <div class="filter-buttons">
+            <button class="filter-btn" onclick="filterPlaces('restaurant')">مطاعم</button>
+            <button class="filter-btn" onclick="filterPlaces('cafe')">كافيهات</button>
+            <button class="filter-btn" onclick="filterPlaces('nightlife')">سهرات</button>
+            <button class="filter-btn" onclick="filterPlaces('lounge')">لاونج</button>
+            <button class="filter-btn" onclick="filterPlaces('tourist')">سياحية</button>
+            <button class="filter-btn" onclick="filterPlaces('nile_cruise')">رحلات نيلية</button>
+            <button class="filter-btn" id="virtual-tour-btn">جولة افتراضية</button>
+          </div>
+          <div id="places-list" class="places-list"></div>
+        </div>
+      </div>
+      <div id="map-fallback" class="map-fallback">جارٍ تحميل الخريطة...</div>
+    </div>
+  </section>
+
+  <!-- Schedule Section -->
+  <section id="schedule" class="section">
+    <div class="container">
+      <h2>برنامج الرحلة الأسبوعي</h2>
+      <p id="schedule-suggestion" class="schedule-suggestion"></p>
+      <div class="schedule-table">
+        <table id="schedule-table"></table>
+      </div>
+      <div class="calendar-actions">
+        <button onclick="saveCalendar()">حفظ البرنامج</button>
+        <button id="generate-pdf-btn" onclick="generatePDF()">تحميل كـ PDF</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="section">
+    <div class="container">
+      <h2>معرض الصور</h2>
+      <div class="swiper gallery-slider">
+        <div class="swiper-wrapper">
+          <!-- Slides will be populated by JavaScript -->
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2>من نحن</h2>
+      <p>NileVibe هي تجربتك الفاخرة لاستكشاف القاهرة بسيارات مميزة وسائقين محترفين. نسعى لتقديم رحلة مريحة وممتعة تجمع بين الفخامة والثقافة المصرية الأصيلة، سواء كنت تزور الأهرامات، تستمتع بمأكولات النيل، أو تكتشف الحياة الليلية النابضة بالحياة.</p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>معلومات التواصل</h2>
+      <div class="contact-info">
+        <p><i class="fas fa-envelope"></i> info@EgySmartTours.com</p>
+        <p><i class="fas fa-phone"></i> +201030956097</p>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/+201030956097" target="_blank">راسلنا على واتساب</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 NileVibe. جميع الحقوق محفوظة.</p>
+      <div class="social-icons">
+        <a href="https://facebook.com" target="_blank" aria-label="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com" target="_blank" aria-label="انستجرام"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com" target="_blank" aria-label="تويتر"><i class="fab fa-x-twitter"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- زر رجوع للأعلى -->
+  <button id="backToTop" aria-label="رجوع للأعلى" style="display:none;position:fixed;bottom:30px;left:30px;z-index:999;background:#FFD700;color:#121212;border:none;border-radius:50%;width:40px;height:40px;font-size:1.5em;cursor:pointer;">↑</button>
+
+  <!-- سكريبتات تحميل كسول للموارد الثقيلة وزر الرجوع للأعلى -->
+  <script>
+    // زر رجوع للأعلى
+    window.onscroll = function() {
+      document.getElementById('backToTop').style.display = window.scrollY > 300 ? 'block' : 'none';
+    };
+    document.getElementById('backToTop').onclick = function() {
+      window.scrollTo({top:0,behavior:'smooth'});
+    };
+
+    // تحميل كسول للـ Mapbox وSwiper
+    document.addEventListener("DOMContentLoaded", function() {
+      if (document.getElementById('map-container')) {
+        var script = document.createElement('script');
+        script.src = 'https://unpkg.com/mapbox-gl@2.9.0/dist/mapbox-gl.js';
+        document.body.appendChild(script);
+      }
+      if (document.querySelector('.gallery-slider')) {
+        var script2 = document.createElement('script');
+        script2.src = 'https://unpkg.com/swiper/swiper-bundle.min.js';
+        document.body.appendChild(script2);
+      }
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
